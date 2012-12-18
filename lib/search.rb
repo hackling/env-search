@@ -47,18 +47,23 @@ class Search
   attr_accessor :pages, :queries
 
   def initialize max_number = 8
-    @max_number_of_keywords = max_number
-    @pages = []
+    if max_number > 1
+      @max_number_of_keywords = max_number
+    else
+      @max_number_of_keywords = 1
+    end
+      @pages = []
     @queries = []
   end
 
   def input data
+    data = data.chomp.strip
     data = data.split(" ")    
-    case data[0]
+    case data[0].upcase
     when 'P'
-      add_page(data.slice(1..-1))
+      add_page(data[1..-1])
     when 'Q'
-      add_query(data.slice(1..-1))
+      add_query(data[1..-1])
     else
       "Incorrect input statement"
     end

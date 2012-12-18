@@ -16,6 +16,18 @@ describe Search do
       (search.queries)[0].keywords.should eq ['review']
     end
 
+    it "should ignore casing on input commands - pages" do
+      page = 'p Review'
+      search.input(page)
+      (search.pages)[0].keywords.should eq ['review']
+    end
+
+    it "should ignore casing on input commands - queries" do
+      query = 'q Review'
+      search.input(query)
+      (search.queries)[0].keywords.should eq ['review']
+    end
+
     it 'should ignore pages with too many keywords' do
       page = 'P ' + 'Keywords ' * 10
       search.input(page).should eq "Too many keywords in a page"
@@ -82,6 +94,16 @@ describe Search do
       score.should eq (max_number * max_number)
     end
 
+    it "should not care about escaped characters" do 
+      search.input "P This\n is\t some\t text\n "
+      (search.pages)[0].keywords.should eq ['this', 'is', 'some', 'text']
+    end
+
+    it "should not care about leading or trailing white space" do
+      search.input "   P This is some text       "
+      (search.pages)[0].keywords.should eq ['this', 'is', 'some', 'text']
+    end
+
     it "should not score with no data" do
       search.calculate_all_scores.should eq "No Data"
     end
@@ -102,4 +124,19 @@ describe Search do
       output = search.calculate_all_scores
       output.should eq "Q1: P1 P2\nQ2: P1 P2\n"
     end
+  
+    it "should throw an error when max number of keywords is less than 1"
+
+    it "should calculate properly with a max page number less than 8 " do
+      number = 5
+      max_5_search = Search.new(number)}
+      p1 = Page.new( %w[one two three] )
+      q1 = Query.new(['one'])
+      score = max_5_search.calculate_score q1, p1
+      score.should eq (number * number)    
+    end
+
+    it "should insert properly with max keywords of ONE"
+    it "should calculate properly with max keywords of ONE"
+
 end
