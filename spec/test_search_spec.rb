@@ -1,7 +1,7 @@
 require "search.rb"
 
 describe Search do 
-  let(:max_number) {8}
+  let(:max_number) {5}
   let(:search) {Search.new(max_number)}
 
     it "should detect page input" do
@@ -129,7 +129,7 @@ describe Search do
 
     it "should calculate properly with a max page number less than 8 " do
       number = 5
-      max_5_search = Search.new(number)}
+      max_5_search = Search.new(number)
       p1 = Page.new( %w[one two three] )
       q1 = Query.new(['one'])
       score = max_5_search.calculate_score q1, p1
